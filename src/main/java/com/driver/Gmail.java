@@ -2,6 +2,7 @@ package com.driver;
 
 import java.util.ArrayList;
 import java.util.Date;
+import org.apache.commons.lang3.tuple.Triple;
 
 public class Gmail extends Email {
 
@@ -9,11 +10,13 @@ public class Gmail extends Email {
     //Inbox: Stores mails. Each mail has date (Date), sender (String), message (String). It is guaranteed that message is distinct for all mails.
     //Trash: Stores mails. Each mail has date (Date), sender (String), message (String)
     private ArrayList<Triple<Date,String,String>> Inbox; // triple of date, sender, message
+    private ArrayList<Triple<Date,String,String>> Trash;
     public Gmail(String emailId, int inboxCapacity) {
         super(emailId);
         this.inboxCapacity = inboxCapacity;
         this.Inbox = new ArrayList<>();
         this.Trash = new ArrayList<>();
+
     }
 
     public void receiveMail(Date date, String sender, String message){
@@ -21,6 +24,7 @@ public class Gmail extends Email {
         // It is guaranteed that:
         // 1. Each mail in the inbox is distinct.
         // 2. The mails are received in non-decreasing order. This means that the date of a new mail is greater than equal to the dates of mails received already.
+
         if(Inbox.size() == inboxCapacity){
             Triple<Date,String,String> oldestmail = Inbox.get(0);
             Inbox.remove(0);
@@ -51,6 +55,7 @@ public class Gmail extends Email {
         // Else, return the message of the latest mail present in the inbox
         if(Inbox.isEmpty()) return null;
         return Inbox.get(Inbox.size()-1).getRight();
+
     }
 
     public String findOldestMessage(){
@@ -76,16 +81,19 @@ public class Gmail extends Email {
     public int getInboxSize(){
         // Return number of mails in inbox
         return Inbox.size();
+
     }
 
     public int getTrashSize(){
         // Return number of mails in Trash
         return Trash.size();
+
     }
 
     public void emptyTrash(){
         // clear all mails in the trash
         Trash.clear();
+
     }
 
     public int getInboxCapacity() {
